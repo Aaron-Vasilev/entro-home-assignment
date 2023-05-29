@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Task } from '@prisma/client'
 import { RootState } from '..'
 import { call } from '../../lib/axios'
+import { Api } from '../../utils/consts'
 
 interface TasksState {
   tasks: Task[]
@@ -45,7 +46,7 @@ export const createTask = createAsyncThunk<Task, Task, { state: RootState }>(
   '/createTask',
   async (newTask, thunkApi) => {
     try {
-      const res = await call<Task>('/createTask', newTask)
+      const res = await call<Task>(Api.getTasks, newTask)
 
       if (res.error) {
         thunkApi.rejectWithValue(res.error)

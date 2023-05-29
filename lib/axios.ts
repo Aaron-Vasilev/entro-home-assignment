@@ -9,7 +9,7 @@ const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL
 })
 
-export async function call<T>(url: string, data: any): Promise<Resonse<T>> {
+export async function call<T>(url: string, data?: any): Promise<Resonse<T>> {
   try {
     const res = await instance.post(url, data)
 

@@ -16,9 +16,8 @@ export function TaskForm() {
 
   // TODO: Add creation date
   function next() {
-    console.log(errors)
-    trigger('title')
-//    setStep(2)
+//    trigger('title')
+    setStep(2)
   }
 
   return (
@@ -41,7 +40,7 @@ export function TaskForm() {
             </FormControl>
             <FormControl>
               <FormLabel>Assignee name</FormLabel>
-              <Input {...register('assignee')} />
+              <Input {...register('assigneeName')} />
             </FormControl>
             <Button onClick={() => next()}>Next</Button>
           </>
