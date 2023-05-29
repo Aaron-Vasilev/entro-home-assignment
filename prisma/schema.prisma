@@ -8,10 +8,18 @@ datasource db {
 }
 
 model Task {
-  id             Int      @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   title          String
-  assigneeName   String   @default("Unassigned")
-  assigneeAvatar String   @default("https://entro.security/wp-content/uploads/2023/05/entro-footer-icon.svg")
+  assigneeName   String        @default("Unassigned")
+  assigneeAvatar String        @default("https://entro.security/wp-content/uploads/2023/05/entro-footer-icon.svg")
   status         String
-  creationDate   DateTime @default(now())
+  creationDate   DateTime      @default(now())
+  TaskRelation   TaskRelation?
+}
+
+model TaskRelation {
+  id           Int      @id @unique
+  relatedTasks Int[]
+  watchers     String[]
+  Task         Task     @relation(fields: [id], references: [id])
 }

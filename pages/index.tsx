@@ -1,25 +1,32 @@
-import { Box, Heading, VStack } from '@chakra-ui/react'
+import { useEffect } from 'react'
+import { VStack } from '@chakra-ui/react'
 import { Task } from '@prisma/client'
-import { TaskForm } from '../components/TaskForm'
 import { TaskList } from '../components/TaskList'
 import { call } from '../lib/axios'
 import { Api } from '../utils/consts'
+import { useAppDispatch } from '../store'
+import { addTasks } from '../store/slices/taskSlice'
 
 interface Props {
   tasks: Task[]
 }
 
 export default function HomePage({ tasks }: Props) {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(addTasks(tasks))
+  }, [tasks])
+
   return (
-    <Box>
-      <Heading mb={5}>Task Manager</Heading>
-      <VStack spacing={5}>
-        <TaskForm />
-        <TaskList 
-          tasks={tasks}
-        />
-      </VStack>
-    </Box>
+    <VStack 
+      spacing={5}
+      align="stretch"
+    >
+      <TaskList 
+        tasks={tasks}
+      />
+    </VStack>
   )
 }
 

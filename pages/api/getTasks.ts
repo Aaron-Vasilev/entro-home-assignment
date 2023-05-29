@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../lib/prisma'
 
-async function getTasks(req: NextApiRequest, res: NextApiResponse) {
+async function getTasks(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const result = await prisma.task.findMany()
+    const tasks = await prisma.task.findMany()
 
-    res.json(result)
+    res.json(tasks)
   } catch (e) {
     console.log('createTaskHandle ERROR', e)
   }
