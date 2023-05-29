@@ -20,8 +20,8 @@ export const taskSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<Task>) => {
-      state.tasks.push(action.payload)
+    addTasks: (state, action: PayloadAction<Task[]>) => {
+      state.tasks.push(...action.payload)
     },
   },
   extraReducers: (builder) => {
@@ -40,13 +40,13 @@ export const taskSlice = createSlice({
   },
 })
 
-export const { addTask } = taskSlice.actions
+export const { addTasks } = taskSlice.actions
 
 export const createTask = createAsyncThunk<Task, Task, { state: RootState }>(
   '/createTask',
   async (newTask, thunkApi) => {
     try {
-      const res = await call<Task>(Api.getTasks, newTask)
+      const res = await call<Task>(Api.createTask, newTask)
 
       if (res.error) {
         thunkApi.rejectWithValue(res.error)

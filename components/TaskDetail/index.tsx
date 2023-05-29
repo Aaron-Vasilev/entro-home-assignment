@@ -1,26 +1,97 @@
-import { useSelector } from 'react-redux'
-import { Box, Heading, Text } from '@chakra-ui/react'
-import { RootState } from '../../store'
+import { Box, Grid, Text } from '@chakra-ui/react'
+import { Task } from '@prisma/client'
 
-interface Props {
-  taskId: string
+interface Prop {
+  task: Task
 }
 
-export function TaskDetail({ taskId }: Props) {
-  console.log('† line 9 taskId', taskId)
-  const task = useSelector((state: RootState) => 
-    state.tasks.tasks.find(task => task.id === +taskId)
-  )
+export function TaskDetail({ task }: Prop) {
 
-  console.log('† line 15 task', task)
-  if (task === undefined) {
-    return <Text>No task found</Text>
+  return (
+    <Grid
+      templateColumns="repeat(3, 1fr)"
+      justifyItems="start"
+    >
+      <Detail
+        label="Status"
+        value={task.status}
+      />
+      <Detail
+        label="Date Created"
+        value={task.creationDate.toString()}
+      />
+      <Detail
+        label="Assignee"
+        value={task.assigneeName}
+      />
+      <Box
+        gridColumn="span 3"
+        justifySelf="normal"
+      >
+        <Detail
+          label="Description"
+          value={task.assigneeName}
+          size="L"
+        />
+      </Box>
+    </Grid>
+  )
+}
+
+interface Props {
+  label: string
+  value: string
+  size?: 'L' | 'S'
+}
+
+function Detail({ label, value, size = 'S' }: Props) {
+  let width: string
+  let height: string
+  let radius: string
+  let px: string
+  let py: string
+
+  switch (size) {
+    case 'S': {
+      width = 'fit-content'
+      height = 'auto'
+      radius = '16px'
+      px='12px'
+      py='2px'
+      break;
+    }
+    case 'L': {
+      width = 'auto'
+      height = '134px'
+      radius = '10px'
+      px = py = '16px'
+      break;
+    }
   }
 
   return (
-    <Box>
-      <Heading mb={4}>{task.title}</Heading>
-      <Text>Assigned to: {task.assigneeName}</Text>
+    <Box
+      p="16px"
+    >
+      <Text
+        textColor="secondary.500"
+        fontSize="13px"
+        lineHeight="18px"
+        mb="8px"
+      >
+        {label}
+      </Text>
+      <Box
+        w={width}
+        px={px}
+        py={py}
+        borderRadius={radius}
+        minHeight={height}
+        bg="primary.200"
+        fontSize="13px"
+      >
+        {value}
+      </Box>
     </Box>
   )
 }
