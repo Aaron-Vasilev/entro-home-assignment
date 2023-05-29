@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
-import { VStack } from '@chakra-ui/react'
+import { Flex, Heading, VStack } from '@chakra-ui/react'
 import { Task } from '@prisma/client'
 import { TaskList } from '../components/TaskList'
 import { call } from '../lib/axios'
 import { Api } from '../utils/consts'
 import { useAppDispatch } from '../store'
 import { addTasks } from '../store/slices/taskSlice'
+import { Button } from "../components/Button"
 
 interface Props {
   tasks: Task[]
@@ -23,6 +24,21 @@ export default function HomePage({ tasks }: Props) {
       spacing={5}
       align="stretch"
     >
+      <Flex
+        gap="20px"
+        align="center"
+      >
+        <Heading
+          fontSize="22"
+        >
+          Tasks
+        </Heading>
+        <Button
+          value="New task"
+          handler={() => {}}
+          type="secondary"
+        />
+      </Flex>
       <TaskList 
         tasks={tasks}
       />

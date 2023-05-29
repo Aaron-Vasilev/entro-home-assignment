@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { prisma } from '../../lib/prisma'
+import prisma from '../../lib/prisma'
 
 async function getTasks(_req: NextApiRequest, res: NextApiResponse) {
   try {

@@ -1,17 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Task } from '@prisma/client'
-import { prisma } from '../../lib/prisma'
+import prisma from '../../lib/prisma'
 
 export default async function createTaskHandle(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { title, assigneeName, status } = req.body as Task 
+    const { title, assigneeName, status, relatedTasks, watchers } = req.body
 
     const result = await prisma.task.create({
       data: {
         title,
         assigneeName,
-        assigneeAvatar: '',
         status,
+        assigneeAvatar: 'https://entro.security/wp-content/uploads/2023/05/entro-footer-icon.svg',
+        TaskRelation: {
+          create: {
+            relatedTasks,
+            watchers,
+          }
+        }
       },
     })
 

@@ -1,5 +1,6 @@
 export enum Api {
   createTask = 'createTask',
   getTasks = 'getTasks',
-  getTaskById = 'getTaskById'
+  getTaskById = 'getTaskById',
+  getTaskRelation = 'getTaskRelation'
 }
