@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@chakra-ui/react':
@@ -22,6 +26,9 @@ dependencies:
   next:
     specifier: ^13.4.4
     version: 13.4.4(react-dom@18.2.0)(react@18.2.0)
+  prisma:
+    specifier: ^4.14.1
+    version: 4.14.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -42,9 +49,6 @@ devDependencies:
   '@types/react':
     specifier: ^18.2.7
     version: 18.2.7
-  prisma:
-    specifier: ^4.14.1
-    version: 4.14.1
   typescript:
     specifier: ^5.0.4
     version: 5.0.4
@@ -1396,7 +1400,7 @@ packages:
   /@prisma/engines@4.14.1:
     resolution: {integrity: sha512-APqFddPVHYmWNKqc+5J5SqrLFfOghKOLZxobmguDUacxOwdEutLsbXPVhNnpFDmuQWQFbXmrTTPoRrrF6B1MWA==}
     requiresBuild: true
-    dev: true
+    dev: false
 
   /@reduxjs/toolkit@1.9.5(react-redux@8.0.5)(react@18.2.0):
     resolution: {integrity: sha512-Rt97jHmfTeaxL4swLRNPD/zV4OxTes4la07Xc4hetpUW/vc75t5m1ANyxG6ymnEQ2FsLQsoMlYB2vV1sO3m8tQ==}
@@ -1862,7 +1866,7 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.14.1
-    dev: true
+    dev: false
 
   /prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
