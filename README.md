@@ -1,4 +1,4 @@
-#💾 Installation
+# 💾 Installation
 1. Clone the repo
 2. run 
 ```sh
@@ -8,13 +8,13 @@ npm run startAndGo
 * `NEXT_PUBLIC_API_BASE_URL=http://localhost:3030/api/`
 * `DATABASE_URL=` ask me for db on **AWS**
 
-#🎈 Usage
+# 🎈 Usage
 Start the development server:
 ```sh
 pnpm dev
 ```
 
-#⛏️ Built Using
+# ⛏️ Built Using
 - Next.js - Web Framework
 - Redux - State management
 - Prisma - ORM
