@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "next dev -p 3030",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "startAndGo": "npm i pnpm -g && pnpm install && npx prisma generate && pnpm build"
   },
