@@ -4,9 +4,9 @@
   "description": "",
   "scripts": {
     "dev": "next dev -p 3030",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
-    "startAndGo": "npm i pnpm -g && pnpm install && npx prisma generate && pnpm build && pnpm start"
+    "startAndGo": "npm i pnpm -g && pnpm install && npx prisma generate && pnpm build"
   },
   "keywords": [],
   "author": "",
