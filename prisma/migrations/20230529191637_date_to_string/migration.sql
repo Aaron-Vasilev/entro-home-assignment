@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Task" ALTER COLUMN "creationDate" DROP DEFAULT,
+ALTER COLUMN "creationDate" SET DATA TYPE TEXT;
