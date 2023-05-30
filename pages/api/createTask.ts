@@ -9,6 +9,7 @@ export default async function createTaskHandle(req: NextApiRequest, res: NextApi
         assigneeName, 
         status,
         creationDate,
+        description,
       }, 
       relatedTaskIds, 
       watchers, 
@@ -19,6 +20,7 @@ export default async function createTaskHandle(req: NextApiRequest, res: NextApi
       data: {
         title,
         assigneeName,
+        description,
         status,
         assigneeAvatar: 'https://entro.security/wp-content/uploads/2023/05/entro-footer-icon.svg',
         creationDate,

@@ -18,6 +18,7 @@ const initialState: TasksState = {
     title: '',
     status: '',
     creationDate: '',
+    description: '',
     assigneeName: '',
     assigneeAvatar: '',
   },
