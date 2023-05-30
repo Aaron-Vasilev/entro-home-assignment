@@ -5,7 +5,7 @@ import { TaskList } from '../components/TaskList'
 import { call } from '../lib/axios'
 import { Api } from '../utils/consts'
 import { useAppDispatch, RootState } from '../store'
-import { addTasks } from '../store/slices/taskSlice'
+import { setRelatedTasks, setTasks } from '../store/slices/taskSlice'
 import { TaskForm } from '../components/TaskForm'
 import { Header } from '../components/MainPageHead'
 import { useSelector } from 'react-redux'
@@ -18,12 +18,13 @@ interface Props {
 export default function HomePage({ initialTasks }: Props) {
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const clickOnTask = (task: Task) => router.push(`task/${task.id}`)
   const [creation, setCreation] = useState(false)
   const tasks = useSelector((state: RootState) => state.tasks.tasks)
-  const clickOnTask = (task: Task) => router.push(`task/${task.id}`)
 
   useEffect(() => {
-    dispatch(addTasks(initialTasks))
+    dispatch(setTasks(initialTasks))
+    dispatch(setRelatedTasks([]))
   }, [initialTasks])
 
   return (

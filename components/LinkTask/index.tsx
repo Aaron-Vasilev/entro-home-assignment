@@ -3,22 +3,27 @@ import { Task } from '@prisma/client'
 import { useSelector } from "react-redux"
 import Image from "next/image"
 import { RootState, useAppDispatch } from "../../store"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { TaskList } from "../TaskList"
-import { addRelatedTask, getTasks } from "../../store/slices/taskSlice"
 import { isActiveTask, taskIsInRelatedTasks } from "../../lib"
+import { setRelatedTasks } from "../../store/slices/taskSlice"
 
-export function LinkTask() {
+interface Props {
+  linkTask: Function
+}
+
+export function LinkTask({ linkTask }) {
   const dispatch = useAppDispatch()
   const tasks = useSelector((state: RootState) => state.tasks.tasks)
   const relatedTasks = useSelector((state: RootState) => state.tasks.relatedTasks)
   const activeTask = useSelector((state: RootState) => state.tasks.activeTask)
   const [searchTasks, setSearchTasks] = useState<Task[]>([])
   const [inputIsShown, setInputIsShown] = useState(false)
-  const [_searchWord, setSearchWord] = useState('')
+  const [searchWord, setSearchWord] = useState('')
 
   function handleInput(e: any) {
     const value = e.target.value
+    setSearchWord(value)
   
     if (value === '')
       return
@@ -28,12 +33,17 @@ export function LinkTask() {
       !taskIsInRelatedTasks(relatedTasks, task) &&
        task.title.includes(value)
     ))
-    setSearchWord(value)
+
     setSearchTasks(searchingTasks)
   }
 
-  async function clickOnTask (task: Task) {
-    const result = await dispatch(addRelatedTask(task))
+  function hide() {
+    setInputIsShown(false)
+    setSearchTasks([])
+  }
+
+  async function handleClick (task: Task) {
+    const result = await dispatch(linkTask(task))
 
     if (result.meta.requestStatus === 'fulfilled') {
       setInputIsShown(false)
@@ -49,13 +59,16 @@ export function LinkTask() {
         <Input 
           onChange={handleInput}
         />
-        <TaskList 
-          tasks={searchTasks}
-          clickOnTask={clickOnTask}
-        />
+        { searchWord.length > 0 &&
+          <TaskList 
+            tasks={searchTasks}
+            clickOnTask={handleClick}
+          />
+        }
         <Button
+          mt="12px"
           bg="none"
-          onClick={() => setInputIsShown(false)}
+          onClick={hide}
         >
           <Heading
             fontSize="md"

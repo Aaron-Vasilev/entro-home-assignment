@@ -13,7 +13,14 @@ interface TasksState {
 }
 
 const initialState: TasksState = {
-  activeTask: undefined,
+  activeTask: {
+    id: 0,
+    title: '',
+    status: '',
+    creationDate: '',
+    assigneeName: '',
+    assigneeAvatar: '',
+  },
   tasks: [],
   relatedTasks: [],
   loading: false,
@@ -35,7 +42,7 @@ export const taskSlice = createSlice({
     },
     setRelatedTasks: (state, action: PayloadAction<Task[]>) => {
       state.relatedTasks = action.payload
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -43,7 +50,7 @@ export const taskSlice = createSlice({
         state.loading = true
       })
       .addCase(createTask.fulfilled, (state, action) => {
-        state.tasks = [action.payload, ...state.tasks] 
+        state.tasks.push(action.payload)
         state.loading = false
       })
       .addCase(createTask.rejected, (state) => {
@@ -65,23 +72,36 @@ export const taskSlice = createSlice({
         state.loading = true
       })
       .addCase(addRelatedTask.fulfilled, (state, action) => {
-        state.relatedTasks = [action.payload, ...state.relatedTasks] 
+        state.relatedTasks.push(action.payload)
         state.loading = false
       })
       .addCase(addRelatedTask.rejected, (state) => {
         state.loading = false
         state.error = true
       })
+      .addCase(pushRelatedTask.fulfilled, (state, action) => {
+        state.relatedTasks = [action.payload, ...state.relatedTasks]
+      })
   },
 })
 
-export const { addTasks, setTasks, setActiveTask, setRelatedTasks } = taskSlice.actions
+export const { 
+  addTasks,
+  setTasks, 
+  setActiveTask,
+  setRelatedTasks
+} = taskSlice.actions
 
 export const createTask = createAsyncThunk<Task, Task, { state: RootState }>(
   '/createTask',
   async (newTask, thunkApi) => {
     try {
-      const res = await call<Task>(Api.createTask, newTask)
+      const relatedTaskIds = thunkApi.getState().tasks
+                               .relatedTasks.map(task => task.id)
+      const res = await call<Task>(Api.createTask, {
+        task: newTask,
+        relatedTaskIds
+      })
 
       if (res.error) {
         thunkApi.rejectWithValue(res.error)
@@ -130,5 +150,12 @@ export const addRelatedTask = createAsyncThunk<Task, Task, { state: RootState }>
     } catch (e) {
       console.error('addRelatedTask Error', e)
     }
+  }
+)
+
+export const pushRelatedTask = createAsyncThunk<Task, Task, { state: RootState }>(
+  '/pushRelatedTask',
+  async (newRelatedTask, thunkApi) => {
+    return newRelatedTask
   }
 )

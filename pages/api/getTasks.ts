@@ -7,7 +7,7 @@ async function getTasks(_req: NextApiRequest, res: NextApiResponse) {
 
     res.json(tasks)
   } catch (e) {
-    console.log('createTaskHandle ERROR', e)
+    console.log('getTasks ERROR', e)
   }
 }
 

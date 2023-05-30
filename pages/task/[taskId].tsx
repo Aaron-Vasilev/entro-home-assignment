@@ -1,13 +1,15 @@
-import { Box, Heading, Text } from '@chakra-ui/react'
+import { Flex, Box, Heading, Text } from '@chakra-ui/react'
 import { Task, TaskRelation } from '@prisma/client'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { TaskInfo } from '../../components/TaskInfo'
 import { TaskDetail } from '../../components/TaskDetail'
 import { call } from '../../lib/axios'
 import { Api } from '../../utils/consts'
 import { RelatedWatchers } from '../../components/RelatedWatchers'
-import { setActiveTask, setRelatedTasks, setTasks } from '../../store/slices/taskSlice'
+import { setActiveTask, addRelatedTask, setRelatedTasks, setTasks } from '../../store/slices/taskSlice'
 import { useAppDispatch } from '../../store'
+import { Button } from '../../components/Button'
 
 interface Props {
   activeTask: Task
@@ -17,6 +19,9 @@ interface Props {
 
 export default function TaskPage({ activeTask, tasks, relatedTasks }: Props) {
   const dispatch = useAppDispatch()
+  const router = useRouter()
+  const goHome = () => { router.push('/') }
+  const clickOnTask = (task: Task) => { router.push(task.id.toString()) }
 
   useEffect(() => {
     dispatch(setActiveTask(activeTask))
@@ -25,6 +30,24 @@ export default function TaskPage({ activeTask, tasks, relatedTasks }: Props) {
   }, [activeTask])
 
   return (
+    <>
+      <Flex
+        gap="20px"
+        align="center"
+        mb="20px"
+      >
+        <Heading
+          fontSize="22"
+        >
+          Tasks
+        </Heading>
+        <Button
+          value='Home'
+          handler={goHome}
+          type='secondary'
+          alignTextCenter
+        />
+      </Flex>
     <Box
       py="32px"
       px="28px"
@@ -45,9 +68,10 @@ export default function TaskPage({ activeTask, tasks, relatedTasks }: Props) {
       <Box
         mt="74px"
       >
-        <RelatedWatchers/>
+        <RelatedWatchers clickOnTask={clickOnTask} linkTask={addRelatedTask}/>
       </Box>
     </Box>
+    </>
   )
 }
 

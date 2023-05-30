@@ -11,7 +11,7 @@ async function getTaskById(req: NextApiRequest, res: NextApiResponse) {
 
     res.json(task)
   } catch (e) {
-    console.log('createTaskHandle ERROR', e)
+    console.log('getTaskById ERROR', e)
   }
 }
 

@@ -3,7 +3,17 @@ import prisma from '../../lib/prisma'
 
 export default async function createTaskHandle(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { title, assigneeName, status, relatedTasks, watchers, creationDate } = req.body
+    const { 
+      task: {
+        title, 
+        assigneeName, 
+        status,
+        creationDate,
+      }, 
+      relatedTaskIds, 
+      watchers, 
+    } = req.body
+    console.log('† line 15 req.body', req.body)
 
     const result = await prisma.task.create({
       data: {
@@ -14,7 +24,7 @@ export default async function createTaskHandle(req: NextApiRequest, res: NextApi
         creationDate,
         TaskRelation: {
           create: {
-            relatedTasks,
+            relatedTasks: relatedTaskIds,
             watchers,
           }
         }

@@ -1,8 +1,8 @@
-import { Box, Flex, FormControl, Text, Input } from "@chakra-ui/react"
+import { Box, Flex, FormControl, Text, Input, Select, Textarea } from "@chakra-ui/react"
 import { Task } from '@prisma/client'
 import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { createTask } from "../../store/slices/taskSlice"
+import { Controller, useForm } from "react-hook-form"
+import { createTask, pushRelatedTask } from "../../store/slices/taskSlice"
 import { Button } from '../Button'
 import { useAppDispatch } from "../../store"
 import { currentTime } from "../../lib"
@@ -10,6 +10,8 @@ import { RelatedWatchers } from "../RelatedWatchers"
 
 enum Form {
   title = 'title',
+  description = 'description',
+  assigneeName = 'assigneeName',
 } 
 
 interface Props {
@@ -24,15 +26,16 @@ export function TaskForm({ setCreation }: Props) {
     register, 
     handleSubmit, 
     trigger,
+    control,
     formState: {
       errors 
     }, 
   } = useForm()
 
   async function onSubmit (newTask: Task) {
-    newTask.assigneeName = 'Aaron'
     newTask.status = 'Open'
     newTask.creationDate = time
+    console.log('† line 38 newTask', newTask)
     const result = await dispatch(createTask(newTask))
 
     if (result.meta.requestStatus === 'fulfilled') {
@@ -40,10 +43,11 @@ export function TaskForm({ setCreation }: Props) {
     }
   }
 
-
   async function nextStep() {
-    trigger('title')
-    setStep(2)
+    const valid = await trigger('title')
+    if (valid) {
+      setStep(2)
+    }
   }
 
   return (
@@ -77,6 +81,7 @@ export function TaskForm({ setCreation }: Props) {
                 outline="none"
                 _focusVisible={{ outline: "none" }} 
                 placeholder="Task Title"
+                isDisabled={step === 2}
                 id={Form.title}
                 {...register(Form.title, {
                   required: true
@@ -91,9 +96,43 @@ export function TaskForm({ setCreation }: Props) {
           </Box>
           <Box
             alignSelf="center"
-            justifySelf="flex-end"
+            ml="auto"
           >
-            Assign to
+            <FormControl 
+              alignSelf="center"
+              isInvalid={!!errors[Form.assigneeName]}
+            >
+              <Controller
+                name="assigneeName"
+                control={control}
+                defaultValue="Unassigned"
+                rules={{ required: "This is required" }}
+                render={({ field }) => 
+                  <Flex
+                    gap="8px"
+                    alignItems="center"
+                  >
+                    <Text 
+                      whiteSpace="nowrap"
+                      textColor="secondary.500"
+                    >
+                      Assign to
+                    </Text>
+                    <Select
+                      border="none"
+                      id={Form.assigneeName}
+                      _focusVisible={{ outline: "none" }} 
+                      {...field} 
+                    >
+                      <option value="Unassigned">Unassigned</option>
+                      <option value="Beth">Beth</option>
+                      <option value="Dave">Dave</option>
+                      <option value="Emily">Emily</option>
+                    </Select>
+                  </Flex>
+                }
+              />
+            </FormControl>
           </Box>
         </Flex>
         { step === 1 && (
@@ -109,15 +148,58 @@ export function TaskForm({ setCreation }: Props) {
             />
             <Button 
               value="Finish"
-              handler={() => {}}
               submit
               alignTextCenter
+              handler={() => {}}
             />
           </Flex>
         )}
         { step === 2 && (
           <Box>
-            <RelatedWatchers />
+            <FormControl
+              p="16px"
+              isInvalid={!!errors[Form.description]}
+            >
+              <Text
+                textColor="secondary.500"
+                fontSize="12px"
+                mb="8px"
+              >
+                Description
+              </Text>
+              <Textarea 
+                fontSize="16px"
+                backgroundColor="primary.200"
+                p="12px"
+                border="none"
+                fontWeight="bold"
+                outline="none"
+                resize="none"
+                _focusVisible={{ outline: "none" }} 
+                placeholder="Description"
+                id={Form.description}
+                {...register(Form.description, {
+                  required: true
+                })}
+              />
+            </FormControl>
+            <RelatedWatchers clickOnTask={() => console.log(1000)} linkTask={pushRelatedTask}/>
+            <Flex
+              gap="8px"
+              justifyContent="flex-end"
+            >
+              <Button 
+                value="Back"
+                handler={() => setStep(1)}
+              />
+              <Button 
+                value="Finish"
+                submit
+                type="primary"
+                alignTextCenter
+                handler={() => {}}
+              />
+            </Flex>
           </Box>
         )}
       </form>

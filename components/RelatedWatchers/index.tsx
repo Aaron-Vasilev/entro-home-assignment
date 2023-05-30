@@ -2,18 +2,20 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react"
 import { Task } from '@prisma/client'
 import { useState } from "react"
 import { useSelector } from "react-redux"
-import { useRouter } from "next/router"
 import { TaskList } from "../TaskList"
 import { LinkTask } from "../LinkTask"
 import { RootState } from "../../store"
 
 type Tab = 'R' | 'W'
 
-export function RelatedWatchers() {
+interface Props {
+  clickOnTask: Function
+  linkTask: Function
+}
+
+export function RelatedWatchers({ clickOnTask, linkTask }: Props) {
   const relatedTasks = useSelector((state: RootState) => state.tasks.relatedTasks)
   const [currentTab, setCurrentTab] = useState('R')
-  const router = useRouter()
-  const clickOnTask = (task: Task) => { }
   const isActive = (tab: Tab): boolean => currentTab === tab
 
   return (
@@ -42,8 +44,13 @@ export function RelatedWatchers() {
           Watchers
         </Heading>
       </Flex>
-      {currentTab === 'R' ? < TaskList tasks={relatedTasks} clickOnTask={clickOnTask}/> : 'Watchers'}
-      <LinkTask />
+      { currentTab === 'R' ? 
+        <>
+          < TaskList tasks={relatedTasks} clickOnTask={clickOnTask}/> 
+          <LinkTask linkTask={linkTask} />
+        </>
+      : 
+        'Watchers' }
     </Box>
   )
 }
