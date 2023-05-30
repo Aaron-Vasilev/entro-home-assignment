@@ -13,7 +13,8 @@ model Task {
   assigneeName   String        @default("Unassigned")
   assigneeAvatar String        @default("https://entro.security/wp-content/uploads/2023/05/entro-footer-icon.svg")
   status         String
-  creationDate   DateTime      @default(now())
+  creationDate   String      
+  description    String      
   TaskRelation   TaskRelation?
 }
 

@@ -1,21 +1,28 @@
 import { Box, Heading, Text } from '@chakra-ui/react'
 import { Task, TaskRelation } from '@prisma/client'
+import { useEffect } from 'react'
 import { TaskInfo } from '../../components/TaskInfo'
 import { TaskDetail } from '../../components/TaskDetail'
 import { call } from '../../lib/axios'
 import { Api } from '../../utils/consts'
 import { RelatedWatchers } from '../../components/RelatedWatchers'
+import { setActiveTask, setRelatedTasks, setTasks } from '../../store/slices/taskSlice'
+import { useAppDispatch } from '../../store'
 
 interface Props {
-  task: Task
-  relatedTasks: TaskRelation[]
+  activeTask: Task
+  tasks: Task[]
+  relatedTasks: Task[]
 }
 
-export default function TaskPage({ task, relatedTasks }: Props) {
+export default function TaskPage({ activeTask, tasks, relatedTasks }: Props) {
+  const dispatch = useAppDispatch()
 
-  if (task === undefined) {
-    return <Text>No task found</Text>
-  }
+  useEffect(() => {
+    dispatch(setActiveTask(activeTask))
+    dispatch(setTasks(tasks))
+    dispatch(setRelatedTasks(relatedTasks))
+  }, [activeTask])
 
   return (
     <Box
@@ -29,19 +36,16 @@ export default function TaskPage({ task, relatedTasks }: Props) {
         pb="24px"
       >
         <TaskInfo
-          task={task}
+          task={activeTask}
         />
       </Box>
       <TaskDetail
-        task={task}
+        task={activeTask}
       />
       <Box
         mt="74px"
       >
-        <RelatedWatchers 
-          relatedTasks={relatedTasks}
-          watchers={[]}
-        />
+        <RelatedWatchers/>
       </Box>
     </Box>
   )
@@ -50,15 +54,21 @@ export default function TaskPage({ task, relatedTasks }: Props) {
 export async function getServerSideProps(context) {
   try {
     const { taskId } = context.query
-    const [taskCall, taskRelationCall] = await Promise.all([
-      call<Task[]>(Api.getTaskById, { taskId }),
-      call<TaskRelation>(Api.getTaskRelation, { taskId })
+    const [
+      activeTaskCall, 
+      taskRelationCall,
+      tasksCall
+    ] = await Promise.all([
+      call<Task>(Api.getTaskById, { taskId }),
+      call<TaskRelation>(Api.getTaskRelation, { taskId }),
+      call<Task[]>(Api.getTasks)
     ])
 
     return {
       props: {
-        task: taskCall.data,
-        relatedTasks: taskRelationCall.data
+        activeTask: activeTaskCall.data,
+        relatedTasks: taskRelationCall.data,
+        tasks: tasksCall.data
       }
     }
   } catch(e) {

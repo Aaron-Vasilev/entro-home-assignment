@@ -1,63 +1,124 @@
-import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react"
+import { Box, Flex, FormControl, Text, Input } from "@chakra-ui/react"
 import { Task } from '@prisma/client'
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { createTask } from "../../store/slices/taskSlice"
+import { Button } from '../Button'
 import { useAppDispatch } from "../../store"
+import { currentTime } from "../../lib"
+import { RelatedWatchers } from "../RelatedWatchers"
 
-export function TaskForm() {
+enum Form {
+  title = 'title',
+} 
+
+interface Props {
+  setCreation: Function
+}
+
+export function TaskForm({ setCreation }: Props) {
   const dispatch = useAppDispatch()
-  const { register, handleSubmit, formState: { errors }, trigger } = useForm()
   const [step, setStep] = useState(1)
+  const [time, _setTime] = useState(currentTime())
+  const {
+    register, 
+    handleSubmit, 
+    trigger,
+    formState: {
+      errors 
+    }, 
+  } = useForm()
 
   async function onSubmit (newTask: Task) {
-    await dispatch(createTask(newTask))
+    newTask.assigneeName = 'Aaron'
+    newTask.status = 'Open'
+    newTask.creationDate = time
+    const result = await dispatch(createTask(newTask))
+
+    if (result.meta.requestStatus === 'fulfilled') {
+      setCreation(false)
+    }
   }
 
-  // TODO: Add creation date
-  function next() {
-//    trigger('title')
+
+  async function nextStep() {
+    trigger('title')
     setStep(2)
   }
 
   return (
-    <Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {step === 1 && (
-          <>
+    <Box
+      px="32px"
+      py="24px"
+      bg="secondary.50"
+      borderRadius="6px"
+      boxShadow="0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);"
+    >
+      <form 
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <Flex
+          gap="24px"
+          borderBottom="1px solid"
+          borderBottomColor="rgba(152, 162, 179, 0.4)"
+          mb="24px"
+          pb="24px"
+        >
+          Image
+          <Box>
             <FormControl
-              isInvalid={!!errors.title}
+              isInvalid={!!errors[Form.title]}
             >
-              <FormLabel>
-                Title
-              </FormLabel>
               <Input 
-                id="title"
-                {...register('title', {
+                fontSize="16px"
+                pl="0"
+                border="none"
+                fontWeight="bold"
+                outline="none"
+                _focusVisible={{ outline: "none" }} 
+                placeholder="Task Title"
+                id={Form.title}
+                {...register(Form.title, {
                   required: true
                 })}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel>Assignee name</FormLabel>
-              <Input {...register('assigneeName')} />
-            </FormControl>
-            <Button onClick={() => next()}>Next</Button>
-          </>
+            <Text
+              textColor="secondary.500"
+            >
+              {currentTime()}
+            </Text>
+          </Box>
+          <Box
+            alignSelf="center"
+            justifySelf="flex-end"
+          >
+            Assign to
+          </Box>
+        </Flex>
+        { step === 1 && (
+          <Flex
+            justifyContent="flex-end"
+            gap="6px"
+          >
+            <Button 
+              value="Next"
+              handler={nextStep}
+              type="primary"
+              alignTextCenter
+            />
+            <Button 
+              value="Finish"
+              handler={() => {}}
+              submit
+              alignTextCenter
+            />
+          </Flex>
         )}
-        {step === 2 && (
-          <>
-            <FormControl>
-              <FormLabel>Status</FormLabel>
-              <Input {...register('status')} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Description</FormLabel>
-              <Input {...register('description')} />
-            </FormControl>
-            <Button onClick={() => setStep(1)}>Back</Button>
-            <Button type="submit">Submit</Button>
-          </>
+        { step === 2 && (
+          <Box>
+            <RelatedWatchers />
+          </Box>
         )}
       </form>
     </Box>

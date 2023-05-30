@@ -1,21 +1,20 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react"
 import { Task } from '@prisma/client'
-import { useState } from "react";
-import { TaskList } from "../TaskList";
-
-interface Props {
-  relatedTasks: Task[]
-  watchers: []
-}
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { useRouter } from "next/router"
+import { TaskList } from "../TaskList"
+import { LinkTask } from "../LinkTask"
+import { RootState } from "../../store"
 
 type Tab = 'R' | 'W'
 
-export function RelatedWatchers({ relatedTasks }: Props) {
+export function RelatedWatchers() {
+  const relatedTasks = useSelector((state: RootState) => state.tasks.relatedTasks)
   const [currentTab, setCurrentTab] = useState('R')
-
-  function isActive(tab: Tab): boolean {
-    return currentTab === tab
-  }
+  const router = useRouter()
+  const clickOnTask = (task: Task) => { }
+  const isActive = (tab: Tab): boolean => currentTab === tab
 
   return (
     <Box>
@@ -43,7 +42,8 @@ export function RelatedWatchers({ relatedTasks }: Props) {
           Watchers
         </Heading>
       </Flex>
-      {currentTab === 'R' ? < TaskList tasks={relatedTasks}/> : 'Watchers'}
+      {currentTab === 'R' ? < TaskList tasks={relatedTasks} clickOnTask={clickOnTask}/> : 'Watchers'}
+      <LinkTask />
     </Box>
   )
 }

@@ -1,46 +1,44 @@
-import { useEffect } from 'react'
-import { Flex, Heading, VStack } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { VStack } from '@chakra-ui/react'
 import { Task } from '@prisma/client'
 import { TaskList } from '../components/TaskList'
 import { call } from '../lib/axios'
 import { Api } from '../utils/consts'
-import { useAppDispatch } from '../store'
+import { useAppDispatch, RootState } from '../store'
 import { addTasks } from '../store/slices/taskSlice'
-import { Button } from "../components/Button"
+import { TaskForm } from '../components/TaskForm'
+import { Header } from '../components/MainPageHead'
+import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
 
 interface Props {
-  tasks: Task[]
+  initialTasks: Task[]
 }
 
-export default function HomePage({ tasks }: Props) {
+export default function HomePage({ initialTasks }: Props) {
   const dispatch = useAppDispatch()
+  const router = useRouter()
+  const [creation, setCreation] = useState(false)
+  const tasks = useSelector((state: RootState) => state.tasks.tasks)
+  const clickOnTask = (task: Task) => router.push(`task/${task.id}`)
 
   useEffect(() => {
-    dispatch(addTasks(tasks))
-  }, [tasks])
+    dispatch(addTasks(initialTasks))
+  }, [initialTasks])
 
   return (
     <VStack 
       spacing={5}
       align="stretch"
     >
-      <Flex
-        gap="20px"
-        align="center"
-      >
-        <Heading
-          fontSize="22"
-        >
-          Tasks
-        </Heading>
-        <Button
-          value="New task"
-          handler={() => {}}
-          type="secondary"
-        />
-      </Flex>
+      <Header 
+        creation={creation}
+        setCreation={setCreation}
+      />
+      { creation && <TaskForm setCreation={setCreation} /> }
       <TaskList 
         tasks={tasks}
+        clickOnTask={clickOnTask}
       />
     </VStack>
   )
@@ -52,7 +50,7 @@ export async function getServerSideProps() {
 
     return {
       props: {
-        tasks: res.data
+        initialTasks: res.data
       }
     }
   } catch(e) {
