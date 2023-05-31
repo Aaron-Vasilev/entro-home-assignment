@@ -1,23 +1,22 @@
 # 💾 Installation
 1. Clone the repo
-2. run 
-```sh
-npm run startAndGo
-```
-3. Set up environment variables 
+2. Set up environment variables 
 * `NEXT_PUBLIC_API_BASE_URL=http://localhost:3030/api/`
 * `DATABASE_URL=` ask me for db on **AWS**
-
-# 🎈 Usage
-Start the development server:
+3.
 ```sh
-pnpm dev
+docker-compose build
+```
+4.
+```sh
+docker-compose up 
 ```
 
 # ⛏️ Built Using
-- Next.js - Web Framework
+- Next.js - Web framework
 - Redux - State management
 - Prisma - ORM
 - PostgreSQL - Database
-- Chakra UI - For building the UI.
-- pnpm - packaga manager
+- Chakra UI - For building the UI
+- Docker - Containerization
+- pnpm - Packaga manager

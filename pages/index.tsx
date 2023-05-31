@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { VStack } from '@chakra-ui/react'
-import { Task } from '@prisma/client'
+import { Task } from '../prisma/generated/'
 import { TaskList } from '../components/TaskList'
 import { call } from '../lib/axios'
 import { Api } from '../utils/consts'

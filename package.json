@@ -6,7 +6,7 @@
     "dev": "next dev -p 3030",
     "build": "next build",
     "start": "next start",
-    "startAndGo": "npm i pnpm -g && pnpm install && npx prisma generate && pnpm build"
+    "startAndGo": "npm i pnpm -g && pnpm install && pnpx prisma generate && pnpm build"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +15,11 @@
     "@chakra-ui/react": "^2.6.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@prisma/client": "4.15.0",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "framer-motion": "^10.12.16",
     "next": "13.3.4",
-    "prisma": "^4.14.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.1",
@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^20.2.5",
     "@types/react": "^18.2.7",
+    "prisma": "^4.15.0",
     "typescript": "^5.0.4"
   }
 }

@@ -1,6 +1,5 @@
-import Image from 'next/image'
 import { Box, Flex, Heading, Text } from '@chakra-ui/react'
-import { Task } from '@prisma/client'
+import { Task } from '../../prisma/generated'
 
 interface Props {
   task: Task

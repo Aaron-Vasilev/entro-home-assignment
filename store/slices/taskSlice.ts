@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Task } from '@prisma/client'
+import { Task } from '../../prisma/generated/'
 import { RootState } from '..'
 import { call } from '../../lib/axios'
 import { Api } from '../../utils/consts'

@@ -1,5 +1,5 @@
 import { Box, Flex, FormControl, Text, Input, Select, Textarea } from "@chakra-ui/react"
-import { Task } from '@prisma/client'
+import { Task } from '../../prisma/generated'
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { createTask, pushRelatedTask } from "../../store/slices/taskSlice"

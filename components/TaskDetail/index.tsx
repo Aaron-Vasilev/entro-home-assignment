@@ -1,5 +1,5 @@
 import { Box, Grid, Text } from '@chakra-ui/react'
-import { Task } from '@prisma/client'
+import { Task } from '../../prisma/generated'
 
 interface Prop {
   task: Task

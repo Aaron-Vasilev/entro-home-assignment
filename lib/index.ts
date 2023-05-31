@@ -1,4 +1,4 @@
-import { Task } from '@prisma/client'
+import { Task } from '../prisma/generated'
 
 export function currentTime(): string {
   const date = new Date()

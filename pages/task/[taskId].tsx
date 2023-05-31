@@ -1,5 +1,5 @@
 import { Flex, Box, Heading, Text } from '@chakra-ui/react'
-import { Task, TaskRelation } from '@prisma/client'
+import { Task, TaskRelation } from '../../prisma/generated/'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { TaskInfo } from '../../components/TaskInfo'

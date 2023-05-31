@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react"
-import { Task } from '@prisma/client'
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { TaskList } from "../TaskList"

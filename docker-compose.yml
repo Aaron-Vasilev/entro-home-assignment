@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  task-manager:
+    env_file:
+    - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - .:/app
+      - /app/node_modules
+    container_name: task-manager
+    expose:
+      - '3030'
+    ports:
+      - '3030:3030'
+    command: pnpm dev

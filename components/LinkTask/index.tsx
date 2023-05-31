@@ -1,18 +1,17 @@
 import { Button, Box, Heading, Input } from "@chakra-ui/react"
-import { Task } from '@prisma/client'
+import { Task } from '../../prisma/generated'
 import { useSelector } from "react-redux"
 import Image from "next/image"
 import { RootState, useAppDispatch } from "../../store"
 import { useState } from "react"
 import { TaskList } from "../TaskList"
 import { isActiveTask, taskIsInRelatedTasks } from "../../lib"
-import { setRelatedTasks } from "../../store/slices/taskSlice"
 
 interface Props {
   linkTask: Function
 }
 
-export function LinkTask({ linkTask }) {
+export function LinkTask({ linkTask }: Props) {
   const dispatch = useAppDispatch()
   const tasks = useSelector((state: RootState) => state.tasks.tasks)
   const relatedTasks = useSelector((state: RootState) => state.tasks.relatedTasks)

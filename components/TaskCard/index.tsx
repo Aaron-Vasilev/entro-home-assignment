@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Box, Flex } from '@chakra-ui/react'
-import { Task } from '@prisma/client'
+import { Task } from '../../prisma/generated'
 import { Button } from '../Button'
 import { TaskInfo } from '../TaskInfo'
 

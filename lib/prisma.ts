@@ -1,5 +1,4 @@
-// prisma.ts
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../prisma/generated'
 
 let prisma: PrismaClient
 
