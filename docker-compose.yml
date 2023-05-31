@@ -16,4 +16,17 @@ services:
       - '3030'
     ports:
       - '3030:3030'
-    command: pnpm dev
+    command: pnpx prisma generate && pnpm dev
+    
+  prisma-postgres-api:
+      stdin_open: true
+      command: pnpx prisma generate
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: prisma-postgres-api
+      depends_on:
+        - postgres
+      ports:
+        - "3000:3000"
+      restart: always

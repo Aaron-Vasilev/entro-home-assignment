@@ -14,6 +14,4 @@ FROM base as production
 
 ENV NODE_PATH=./.next
 
-COPY --chown=node:node --from=builder /app/prisma /app/prisma
-
 RUN pnpm build
