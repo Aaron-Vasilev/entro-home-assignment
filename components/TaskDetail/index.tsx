@@ -30,7 +30,7 @@ export function TaskDetail({ task }: Prop) {
       >
         <Detail
           label="Description"
-          value={task.assigneeName}
+          value={task.description}
           size="L"
         />
       </Box>
