@@ -1,15 +1,17 @@
 # 💾 Installation
 1. Clone the repo
 2. Set up environment variables 
-* `NEXT_PUBLIC_API_BASE_URL=http://localhost:3030/api/`
-* `DATABASE_URL=` ask me for db on **AWS**
 3.
 ```sh
-docker-compose build
+pnpm install
 ```
 4.
 ```sh
-docker-compose up 
+pnpx prisma generate
+```
+5.
+```sh
+pnpm dev
 ```
 
 # ⛏️ Built Using
@@ -18,5 +20,4 @@ docker-compose up
 - Prisma - ORM
 - PostgreSQL - Database
 - Chakra UI - For building the UI
-- Docker - Containerization
 - pnpm - Packaga manager
